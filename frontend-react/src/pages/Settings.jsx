@@ -18,7 +18,7 @@ export default function SettingsPage() {
   const [autoSave, setAutoSave] = useState(true);
 
   return (
-    <WorkspaceLayout rightPanel={<AIChat />}>
+    <WorkspaceLayout>
       <div className="space-y-8">
         <div>
           <h1 className="text-4xl font-bold text-slate-900 [font-family:'Sora',sans-serif]">

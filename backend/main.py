@@ -354,46 +354,83 @@ Only return JSON.
 
 
 # ---------------- INTERVIEW ----------------
+
 @app.post("/interview")
-async def interview(data: dict):
+async def interview(data: dict, current_user=Depends(get_current_user)):
+    role = data.get("role", "").strip()
+    if not role:
+        raise HTTPException(status_code=400, detail="role is required")
+
+    # Pull the user's latest resume analysis for personalization.
+    # If they haven't analyzed a resume yet, we fall back to generic
+    # questions instead of failing outright.
+    latest = analysis_collection.find_one(
+        {"user_email": current_user["email"]},
+        sort=[("_id", -1)],
+    )
+
+    resume_context = ""
+    if latest:
+        skills = ", ".join(latest.get("skills_detected", []))
+        resume_context = f"""
+The candidate's resume shows these skills: {skills}
+Their most recent ATS score was {latest.get("ats_score", "N/A")}.
+Base at least half the questions on these specific skills, not generic
+questions any candidate could get.
+"""
+
     prompt = f"""
-Generate 10 interview questions for
+Generate 10 mock interview questions for a candidate applying to:
+{role}
 
-{data["role"]}
+{resume_context}
 
-Return JSON
+Mix of: 3 behavioral, 4 technical (specific to their skills if listed),
+3 role-fit/motivation questions.
 
+Return ONLY valid JSON, no markdown fences, no explanation:
 {{
-"questions":[]
+"questions": ["...", "..."]
 }}
 """
 
     response = model.generate_content(prompt)
-    return json.loads(response.text)
+    text = response.text.replace("```json", "").replace("```", "").strip()
+    return json.loads(text)
 
 
 @app.post("/interview-feedback")
-async def interview_feedback(data: dict):
+async def interview_feedback(data: dict, current_user=Depends(get_current_user)):
+    role = data.get("role", "")
+    questions = data.get("questions", [])
+    answers = data.get("answers", [])
+
+    qa_pairs = "\n\n".join(
+        f"Q{i+1}: {q}\nA{i+1}: {a}"
+        for i, (q, a) in enumerate(zip(questions, answers))
+    )
+
     prompt = f"""
-Role
-{data["role"]}
+Role the candidate is interviewing for: {role}
 
-Questions
-{data["questions"]}
+{qa_pairs}
 
-Answers
-{data["answers"]}
+Give detailed interview feedback as JSON. Score out of 100 based on
+clarity, relevance, and confidence conveyed in the answers (not just
+"correctness" — this is a soft-skills + content evaluation).
 
-Give detailed interview feedback.
-Score out of 100.
-Strengths.
-Weaknesses.
-Suggestions.
+Return ONLY valid JSON, no markdown fences:
+{{
+"score": 78,
+"strengths": ["...", "..."],
+"weaknesses": ["...", "..."],
+"suggestions": ["...", "..."]
+}}
 """
 
     response = model.generate_content(prompt)
-
-    return {"feedback": response.text}
+    text = response.text.replace("```json", "").replace("```", "").strip()
+    return json.loads(text)
 
 def require_officer(current_user=Depends(get_current_user)):
     if current_user.get("role") != "placement_officer":

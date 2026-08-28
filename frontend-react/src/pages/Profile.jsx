@@ -14,7 +14,7 @@ export default function Profile() {
   const name = localStorage.getItem("name") || "Guest User";
 
   return (
-    <WorkspaceLayout rightPanel={<AIChat />}>
+    <WorkspaceLayout>
       <div className="space-y-8">
         {/* Header */}
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-9">

@@ -54,7 +54,7 @@ export default function CoverLetter() {
   }
 
   return (
-    <WorkspaceLayout rightPanel={<AIChat />}>
+    <WorkspaceLayout>
       <div className="space-y-8">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 text-xs font-semibold text-blue-700">

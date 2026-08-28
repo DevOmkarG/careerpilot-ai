@@ -185,7 +185,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <WorkspaceLayout rightPanel={<AIChat />}>
+    <WorkspaceLayout>
       <div className="space-y-8">
         {/* HERO — instrument cluster */}
         <motion.section

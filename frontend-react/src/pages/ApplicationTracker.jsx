@@ -88,7 +88,7 @@ export default function ApplicationTracker() {
   }, []);
 
   return (
-    <WorkspaceLayout rightPanel={<AIChat />}>
+    <WorkspaceLayout>
       <div className="space-y-8">
         <div className="flex justify-between items-center">
           <div>

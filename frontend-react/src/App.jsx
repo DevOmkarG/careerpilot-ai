@@ -70,7 +70,7 @@ export default function App() {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <Dashboard />
+              <Dashboard/>
             </PrivateRoute>
           }
         />
@@ -103,7 +103,7 @@ export default function App() {
         />
 
         <Route
-          path="/career-tools"
+          path="/tools"
           element={
             <PrivateRoute>
               <CareerTools />

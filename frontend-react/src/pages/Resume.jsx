@@ -3,7 +3,7 @@ import AIChat from "../components/chat/AIChat";
 
 export default function Resume() {
   return (
-    <WorkspaceLayout rightPanel={<AIChat />}>
+    <WorkspaceLayout>
 
       <div className="space-y-6">
 
