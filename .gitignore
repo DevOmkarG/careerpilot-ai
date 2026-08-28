@@ -1,0 +1,19 @@
+.env
+__pycache__/
+*.pyc
+
+
+# Node.js dependencies (JavaScript/React)
+node_modules/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build and log folders
+dist/
+build/
+.next/
+*.log
