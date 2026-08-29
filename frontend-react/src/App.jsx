@@ -174,7 +174,7 @@ export default function App() {
 
         <Route
           path="*"
-          element={<Navigate to="/dashboard" replace />}
+          element={<Navigate to="/" replace />}
         />
 
       </Routes>
