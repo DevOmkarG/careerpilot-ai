@@ -35,7 +35,7 @@ const initialJobs = {
   Rejected: [],
 };
 
-const API = "http://127.0.0.1:8000";
+const API = "https://careerpilot-ai-skk5.onrender.com";
 
 export default function ApplicationTracker() {
   const [jobs, setJobs] = useState(initialJobs);

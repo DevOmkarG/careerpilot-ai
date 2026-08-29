@@ -28,6 +28,7 @@ export default function Upload() {
     try {
       setLoading(true);
       const data = await uploadResume(file, jobDescription);
+      localStorage.setItem("resumeAnalysis", JSON.stringify(data));
       navigate("/dashboard", { state: data });
     } catch (err) {
       console.error(err);

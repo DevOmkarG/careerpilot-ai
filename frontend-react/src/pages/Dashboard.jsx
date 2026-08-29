@@ -19,6 +19,7 @@ import {
   TrendingUp,
   ArrowUpRight,
 } from "lucide-react";
++
 
 // ---------- Signature element: a light instrument-style radial gauge ----------
 function RadialGauge({ value = 0, label, unit = "%", accent = "blue", size = 128 }) {
@@ -140,11 +141,14 @@ function PanelHeader({ eyebrow, title, sub, right }) {
 export default function Dashboard() {
   const { state } = useLocation();
 
-  if (!state) {
-    return <Navigate to="/" replace />;
-  }
+  const storedData = localStorage.getItem("resumeAnalysis");
+  const parsedData = storedData ? JSON.parse(storedData) : null;
 
-  const dashboardData = state;
+  const dashboardData = state || parsedData;
+
+  if (!dashboardData) {
+    return <Navigate to="/upload" replace />;
+  }
 
   const trend =
     dashboardData.score_trend && dashboardData.score_trend.length

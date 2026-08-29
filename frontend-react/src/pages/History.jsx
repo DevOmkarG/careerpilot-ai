@@ -15,7 +15,7 @@ export default function History() {
 
   async function loadHistory() {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/history");
+      const res = await axios.get("https://careerpilot-ai-skk5.onrender.com/history");
       setHistory(res.data);
     } catch (err) {
       console.log(err);
@@ -25,7 +25,7 @@ export default function History() {
 
   async function deleteResume(id) {
     if (!window.confirm("Delete this resume?")) return;
-    await axios.delete(`http://127.0.0.1:8000/history/${id}`);
+    await axios.delete(`https://careerpilot-ai-skk5.onrender.com/history/${id}`);
     loadHistory();
   }
 

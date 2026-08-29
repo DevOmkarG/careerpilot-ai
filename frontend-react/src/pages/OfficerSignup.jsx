@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { Building2, Copy, Check } from "lucide-react";
 
-const API = "http://127.0.0.1:8000";
+const API = "https://careerpilot-ai-skk5.onrender.com";
 
 export default function OfficerSignup() {
   const navigate = useNavigate();

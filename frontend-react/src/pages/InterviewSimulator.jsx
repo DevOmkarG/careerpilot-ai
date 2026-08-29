@@ -11,7 +11,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-const API = "http://127.0.0.1:8000";
+const API = "https://careerpilot-ai-skk5.onrender.com";
 
 // "setup" -> "live" -> "results"
 export default function InterviewPage() {

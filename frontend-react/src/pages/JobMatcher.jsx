@@ -18,7 +18,7 @@ export default function JobMatcher() {
 
     setLoading(true);
     try {
-      const res = await axios.post("http://127.0.0.1:8000/job-match", {
+      const res = await axios.post("https://careerpilot-ai-skk5.onrender.com/job-match", {
         resume,
         job_description: jobDescription,
       });

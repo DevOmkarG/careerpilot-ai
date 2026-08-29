@@ -103,7 +103,7 @@ export default function App() {
         />
 
         <Route
-          path="/tools"
+          path="/career-tools"
           element={
             <PrivateRoute>
               <CareerTools />

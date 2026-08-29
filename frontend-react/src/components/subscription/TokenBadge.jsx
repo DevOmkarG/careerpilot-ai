@@ -3,7 +3,7 @@ import { Zap, Crown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const API = "http://127.0.0.1:8000";
+const API = "https://careerpilot-ai-skk5.onrender.com";
 
 // Drop this anywhere (e.g. WorkspaceLayout header). It reads the user's
 // remaining free analyses from the backend and shows an upgrade nudge
