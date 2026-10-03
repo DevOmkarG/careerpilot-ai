@@ -3,16 +3,45 @@ import json
 import time
 
 from dotenv import load_dotenv
-import google.generativeai as genai
-from google.api_core.exceptions import ResourceExhausted
+from google import genai
+from google.genai import errors
 
 load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
+MODEL_NAME = "gemini-3.5-flash"
 
-genai.configure(api_key=API_KEY)
+client = genai.Client(api_key=API_KEY) if API_KEY else None
 
-model = genai.GenerativeModel("gemini-2.5-flash")
+
+class _GeminiModel:
+    """Keeps the old `model.generate_content(prompt)` interface so that
+    main.py (chat, cover letter, job match, interview) needs no changes."""
+
+    def generate_content(self, prompt):
+        if client is None:
+            raise RuntimeError("GEMINI_API_KEY is not set")
+        return client.models.generate_content(
+            model=MODEL_NAME,
+            contents=prompt,
+        )
+
+
+model = _GeminiModel()
+
+
+def _fallback(summary, review):
+    return json.dumps({
+        "summary": summary,
+        "resume_level": "Unknown",
+        "confidence_score": 0,
+        "interview_readiness": "Unknown",
+        "career_paths": [],
+        "strengths": [],
+        "missing_skills": [],
+        "suggestions": [],
+        "review": review,
+    })
 
 
 def safe_generate(prompt):
@@ -21,64 +50,24 @@ def safe_generate(prompt):
         response = model.generate_content(prompt)
         return response.text
 
-    except ResourceExhausted:
+    except errors.APIError as e:
 
-        print("Gemini quota reached. Retrying...")
+        # 429 = quota / rate limit: wait and retry once
+        if e.code == 429:
+            print("Gemini quota reached. Retrying...")
+            time.sleep(5)
 
-        time.sleep(5)
+            try:
+                response = model.generate_content(prompt)
+                return response.text
+            except Exception:
+                return _fallback("AI quota exceeded.", "Gemini quota exceeded.")
 
-        try:
-
-            response = model.generate_content(prompt)
-            return response.text
-
-        except Exception:
-
-            return json.dumps({
-
-                "summary": "AI quota exceeded.",
-
-                "resume_level": "Unknown",
-
-                "confidence_score": 0,
-
-                "interview_readiness": "Unknown",
-
-                "career_paths": [],
-
-                "strengths": [],
-
-                "missing_skills": [],
-
-                "suggestions": [],
-
-                "review": "Gemini quota exceeded."
-
-            })
+        return _fallback("AI Error", str(e))
 
     except Exception as e:
 
-        return json.dumps({
-
-            "summary": "AI Error",
-
-            "resume_level": "Unknown",
-
-            "confidence_score": 0,
-
-            "interview_readiness": "Unknown",
-
-            "career_paths": [],
-
-            "strengths": [],
-
-            "missing_skills": [],
-
-            "suggestions": [],
-
-            "review": str(e)
-
-        })
+        return _fallback("AI Error", str(e))
 
 
 def get_ai_review(
