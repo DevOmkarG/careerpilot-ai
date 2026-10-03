@@ -10,7 +10,11 @@ import {
   Check,
   Mail,
   BookOpen,
+  ChevronDown,
+  MessageSquare,
 } from "lucide-react";
+
+const SUPPORT_EMAIL = "luckygaikwad62@gmail.com";
 
 const features = [
   {
@@ -86,11 +90,53 @@ const blogPosts = [
   },
 ];
 
+const aboutPoints = [
+  {
+    title: "Built for job seekers",
+    desc: "CareerPilot turns a plain resume into a clear score, a skills gap list, and concrete next steps.",
+  },
+  {
+    title: "One workspace",
+    desc: "Resume analysis, cover letters, job matching, mock interviews and an application tracker, all in one place.",
+  },
+  {
+    title: "Made for campuses too",
+    desc: "Placement cells can see how their students' resumes are performing and where they need help.",
+  },
+];
+
+const faqs = [
+  {
+    q: "What is an ATS score?",
+    a: "Applicant-tracking systems scan resumes for keywords, structure and formatting before a recruiter reads them. Your ATS score estimates how well your resume would pass that first scan.",
+  },
+  {
+    q: "How many resumes can I analyze for free?",
+    a: "The Free plan includes 3 resume analyses. After that you can upgrade to Pro for unlimited analyses.",
+  },
+  {
+    q: "Which file formats are supported?",
+    a: "Upload your resume as a PDF. Text-based PDFs give the most accurate results.",
+  },
+  {
+    q: "Is my resume data safe?",
+    a: "Your resume is used only to generate your analysis. You can delete past analyses any time from the History page. See the Privacy section below for details.",
+  },
+  {
+    q: "Does a high score guarantee an interview?",
+    a: "No. The score is guidance to help you improve your resume. Hiring decisions depend on many other factors.",
+  },
+  {
+    q: "How do I contact support or give feedback?",
+    a: "Use the Feedback button in the footer or the Contact section and email us. We read every message.",
+  },
+];
+
 export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 [font-family:'Inter',sans-serif]">
+    <div className="min-h-screen scroll-smooth bg-white text-slate-900 [font-family:'Inter',sans-serif]">
       {/* Navbar */}
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
@@ -109,6 +155,8 @@ export default function Home() {
           <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
             <a href="#features" className="hover:text-slate-900">Features</a>
             <a href="#pricing" className="hover:text-slate-900">Pricing</a>
+            <a href="#about" className="hover:text-slate-900">About</a>
+            <a href="#faq" className="hover:text-slate-900">FAQ</a>
             <a href="#blog" className="hover:text-slate-900">Blog</a>
             <a href="#contact" className="hover:text-slate-900">Contact</a>
           </nav>
@@ -241,7 +289,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="border-t border-slate-100 bg-slate-50/60 py-20">
+      <section id="pricing" className="scroll-mt-24 border-t border-slate-100 bg-slate-50/60 py-20">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           <div className="mx-auto max-w-xl text-center">
             <h2 className="text-3xl font-bold text-slate-900 [font-family:'Sora',sans-serif]">
@@ -301,8 +349,67 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About */}
+      <section id="about" className="scroll-mt-24 py-20">
+        <div className="mx-auto max-w-6xl px-6 md:px-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[11px] font-bold uppercase tracking-wide text-blue-600">About</p>
+            <h2 className="mt-2 text-3xl font-bold text-slate-900 [font-family:'Sora',sans-serif]">
+              About CareerPilot
+            </h2>
+            <p className="mt-4 leading-7 text-slate-500">
+              CareerPilot is an AI resume intelligence platform. We help candidates
+              understand how their resume performs, fix what is holding it back, and
+              prepare for the interview that follows.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {aboutPoints.map((a) => (
+              <div
+                key={a.title}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+              >
+                <h3 className="text-[15px] font-semibold text-slate-800">{a.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-500">{a.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="scroll-mt-24 border-t border-slate-100 bg-slate-50/60 py-20">
+        <div className="mx-auto max-w-3xl px-6 md:px-10">
+          <div className="text-center">
+            <p className="text-[11px] font-bold uppercase tracking-wide text-blue-600">FAQ</p>
+            <h2 className="mt-2 text-3xl font-bold text-slate-900 [font-family:'Sora',sans-serif]">
+              Frequently asked questions
+            </h2>
+          </div>
+
+          <div className="mt-10 space-y-3">
+            {faqs.map((f) => (
+              <details
+                key={f.q}
+                className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-semibold text-slate-800 [&::-webkit-details-marker]:hidden">
+                  {f.q}
+                  <ChevronDown
+                    size={18}
+                    className="flex-shrink-0 text-slate-400 transition group-open:rotate-180"
+                  />
+                </summary>
+                <p className="mt-3 text-sm leading-6 text-slate-500">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Blog teaser */}
-      <section id="blog" className="py-20">
+      <section id="blog" className="scroll-mt-24 py-20">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           <div className="mb-10 flex items-end justify-between">
             <div>
@@ -337,8 +444,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact */}
-      <section id="contact" className="border-t border-slate-100 bg-slate-50/60 py-20">
+      {/* Contact + Feedback */}
+      <section id="contact" className="scroll-mt-24 border-t border-slate-100 bg-slate-50/60 py-20">
         <div className="mx-auto max-w-3xl px-6 text-center md:px-10">
           <h2 className="text-3xl font-bold text-slate-900 [font-family:'Sora',sans-serif]">
             Questions? We're here to help.
@@ -346,13 +453,109 @@ export default function Home() {
           <p className="mt-3 text-slate-500">
             For support, partnerships, or campus licensing — reach out any time.
           </p>
-          <a
-            href="mailto:luckygaikwad62@gmail.com"
-            className="mt-7 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-          >
-            <Mail size={16} />
-            luckygaikwad62@gmail.com
-          </a>
+          <div id="feedback" className="mt-7 flex scroll-mt-24 flex-wrap items-center justify-center gap-3">
+            <a
+              href={`mailto:${SUPPORT_EMAIL}`}
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+            >
+              <Mail size={16} />
+              {SUPPORT_EMAIL}
+            </a>
+            <a
+              href={`mailto:${SUPPORT_EMAIL}?subject=CareerPilot%20Feedback`}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-7 py-3.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              <MessageSquare size={16} />
+              Send feedback
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Terms */}
+      <section id="terms" className="scroll-mt-24 py-20">
+        <div className="mx-auto max-w-3xl px-6 md:px-10">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-blue-600">Legal</p>
+          <h2 className="mt-2 text-3xl font-bold text-slate-900 [font-family:'Sora',sans-serif]">
+            Terms of Service
+          </h2>
+          <div className="mt-6 space-y-4 text-sm leading-7 text-slate-600">
+            <p>
+              By creating an account or using CareerPilot, you agree to these terms.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">Your account.</span> You are
+              responsible for keeping your login details safe and for the activity on your
+              account. Provide accurate information when you sign up.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">Your content.</span> Only upload
+              resumes and job descriptions you have the right to use. Do not upload
+              confidential information that belongs to someone else.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">AI-generated results.</span> Scores,
+              suggestions, cover letters and interview feedback are generated by AI and are
+              provided as guidance only. We do not guarantee interviews, job offers or
+              any specific outcome.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">Plans and limits.</span> The Free
+              plan includes a limited number of resume analyses. Pro and Campus plans, their
+              features and prices may change over time.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">Acceptable use.</span> Do not misuse
+              the service, attempt to break or overload it, or use it for anything unlawful.
+            </p>
+            <p>
+              Questions about these terms? Email{" "}
+              <a className="text-blue-600 hover:underline" href={`mailto:${SUPPORT_EMAIL}`}>
+                {SUPPORT_EMAIL}
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy */}
+      <section id="privacy" className="scroll-mt-24 border-t border-slate-100 bg-slate-50/60 py-20">
+        <div className="mx-auto max-w-3xl px-6 md:px-10">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-blue-600">Legal</p>
+          <h2 className="mt-2 text-3xl font-bold text-slate-900 [font-family:'Sora',sans-serif]">
+            Privacy Policy
+          </h2>
+          <div className="mt-6 space-y-4 text-sm leading-7 text-slate-600">
+            <p>
+              <span className="font-semibold text-slate-800">What we collect.</span> Your name,
+              email address, and the resumes and job descriptions you submit, along with the
+              analysis results generated from them.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">How we use it.</span> To create your
+              account, generate your analysis, cover letters, job matches and interview
+              questions, and show your history. Resume text is sent to an AI service to
+              produce these results.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">Campus accounts.</span> If you sign
+              up with a college code, your college's placement officer can see your name,
+              email, plan and latest ATS score.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">Your control.</span> You can delete
+              past analyses from the History page. To delete your account or data, email us.
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">Contact.</span> Privacy questions or
+              requests:{" "}
+              <a className="text-blue-600 hover:underline" href={`mailto:${SUPPORT_EMAIL}`}>
+                {SUPPORT_EMAIL}
+              </a>
+              .
+            </p>
+          </div>
         </div>
       </section>
 
@@ -369,13 +572,19 @@ export default function Home() {
             <span className="text-sm text-slate-400">© 2026</span>
           </div>
 
-          <div className="flex gap-6 text-sm text-slate-400">
-            <span>Privacy</span>
-            <span>Terms</span>
-            <a href="#contact" className="hover:text-slate-600">Support</a>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-slate-400">
+            <a href="#about" className="hover:text-slate-600">About</a>
+            <span>·</span>
+            <a href="#faq" className="hover:text-slate-600">FAQ</a>
+            <span>·</span>
+            <a href="#terms" className="hover:text-slate-600">Terms</a>
+            <span>·</span>
+            <a href="#privacy" className="hover:text-slate-600">Privacy</a>
+            <span>·</span>
+            <a href="#blog" className="hover:text-slate-600">Blog</a>
+            <span>·</span>
+            <a href="#feedback" className="hover:text-slate-600">Feedback</a>
           </div>
-
-        
         </div>
       </footer>
     </div>

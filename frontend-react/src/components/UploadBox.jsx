@@ -31,6 +31,7 @@ export default function UploadBox() {
     try {
       setLoading(true);
       const data = await uploadResume(file);
+      localStorage.setItem("resumeAnalysis", JSON.stringify(data));
       navigate("/dashboard", { state: data });
     } catch (err) {
       console.error(err);

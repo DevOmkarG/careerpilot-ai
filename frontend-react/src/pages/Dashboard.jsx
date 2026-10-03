@@ -1,4 +1,4 @@
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import WorkspaceLayout from "../components/layout/WorkspaceLayout";
@@ -19,7 +19,7 @@ import {
   TrendingUp,
   ArrowUpRight,
 } from "lucide-react";
-+
+
 
 // ---------- Signature element: a light instrument-style radial gauge ----------
 function RadialGauge({ value = 0, label, unit = "%", accent = "blue", size = 128 }) {
@@ -140,14 +140,35 @@ function PanelHeader({ eyebrow, title, sub, right }) {
 
 export default function Dashboard() {
   const { state } = useLocation();
+  const navigate = useNavigate();
 
-  const storedData = localStorage.getItem("resumeAnalysis");
-  const parsedData = storedData ? JSON.parse(storedData) : null;
+  let parsedData = null;
+  try {
+    const storedData = localStorage.getItem("resumeAnalysis");
+    parsedData = storedData ? JSON.parse(storedData) : null;
+  } catch {
+    parsedData = null;
+  }
 
   const dashboardData = state || parsedData;
 
   if (!dashboardData) {
-    return <Navigate to="/upload" replace />;
+    return (
+      <WorkspaceLayout>
+        <div className="mx-auto mt-16 max-w-md rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+          <h1 className="text-2xl font-bold text-slate-900">No analysis yet</h1>
+          <p className="mt-2 text-slate-500">
+            Upload your resume to see your ATS score and insights here.
+          </p>
+          <button
+            onClick={() => navigate("/upload")}
+            className="mt-6 rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700"
+          >
+            Upload resume
+          </button>
+        </div>
+      </WorkspaceLayout>
+    );
   }
 
   const trend =
@@ -166,7 +187,7 @@ export default function Dashboard() {
       title: "Export report",
       desc: "Download the full ATS breakdown as a PDF.",
       icon: Download,
-      onClick: () => exportResumeReport(state),
+            onClick: () => exportResumeReport(dashboardData),
     },
     {
       title: "Share report",
@@ -184,7 +205,7 @@ export default function Dashboard() {
       title: "Analyze another resume",
       desc: "Upload a new file to compare scores.",
       icon: Rocket,
-      onClick: () => (window.location.href = "/"),
+      onClick: () => navigate("/upload"),
     },
   ];
 
@@ -470,7 +491,7 @@ export default function Dashboard() {
 
             <div className="flex w-full flex-col gap-3 xl:w-auto">
               <button
-                onClick={() => (window.location.href = "/")}
+                                onClick={() => navigate("/upload")}
                 className="rounded-xl bg-blue-600 px-8 py-3.5 font-semibold text-white transition hover:bg-blue-700"
               >
                 Analyze another resume

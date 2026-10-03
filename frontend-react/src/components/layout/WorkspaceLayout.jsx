@@ -26,7 +26,7 @@ const navItems = [
   { to: "/interview", label: "Interview AI", icon: Bot },
   { to: "/applications", label: "Applications", icon: ClipboardList },
   { to: "/history", label: "History", icon: History },
-  { to: "/tools", label: "Career Tools", icon: Wrench },
+  { to: "/career-tools", label: "Career Tools", icon: Wrench },
 ];
 
 export default function WorkspaceLayout({ children, rightPanel }) {
